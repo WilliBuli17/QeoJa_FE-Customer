@@ -44,7 +44,7 @@
                 />
               </div>
 
-              <div class="my-10 mr-5">
+              <div class="my-10">
                 <h5 class="text-h5">
                   Cost per person
                 </h5>
@@ -139,6 +139,7 @@
                         text
                         width="50%"
                         class="mb-5 mt-4"
+                        @click="dialogOpen(item)"
                       >
                         <v-icon left>
                           mdi-open-in-new
@@ -149,6 +150,7 @@
                       <AppBtn
                         width="50%"
                         class="mb-5 mt-4"
+                        @click="addChart"
                       >
                         <v-icon left>
                           mdi-shopping-outline
@@ -185,6 +187,84 @@
       </v-col>
     </v-row>
 
+    <v-dialog
+      v-model="dialog"
+      :width="widthDialog"
+    >
+      <v-card>
+        <MaterialCard
+          color="primary"
+          full-header
+        >
+          <template #heading>
+            <div class="pt-3 pb-2 px-3 white--text">
+              <div class="text-h3 font-weight-normal">
+                Detail Produk
+              </div>
+            </div>
+          </template>
+
+          <v-card-text>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="12"
+                md="6"
+                lg="6"
+              >
+                <v-avatar
+                  size="100%"
+                  rounded
+                >
+                  <v-img :src="detailProduct.picture" />
+                </v-avatar>
+              </v-col>
+
+              <v-col
+                class="text-left"
+                cols="12"
+                sm="12"
+                md="6"
+                lg="6"
+              >
+                <v-card-title class="justify-center">
+                  <div class="text-h4 font-weight-middle">
+                    {{ detailProduct.name }}
+                  </div>
+                </v-card-title>
+
+                <v-card-title class="justify-start">
+                  <div class="text-h4 font-weight-middle">
+                    Rp. {{ formatExample(detailProduct.price) }}
+                  </div>
+                </v-card-title>
+
+                <v-card-title class="justify-start">
+                  <div class="text-h4 font-weight-middle">
+                    {{ detailProduct.description }}
+                  </div>
+                </v-card-title>
+              </v-col>
+            </v-row>
+          </v-card-text>
+
+          <v-divider />
+
+          <v-card-actions>
+            <v-spacer />
+
+            <v-btn
+              color="secondary"
+              text
+              @click="dialogClose"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </MaterialCard>
+      </v-card>
+    </v-dialog>
+
     <Snackalertbar
       v-model="snackbar"
       :color="color"
@@ -219,9 +299,27 @@
       min: 0,
       max: 0,
       search: null,
+      dialog: false,
+      detailProduct: {
+        name: null,
+        picture: null,
+        description: null,
+        price: null,
+      },
     }),
 
     computed: {
+      widthDialog () {
+        switch (this.$vuetify.breakpoint.name) {
+          case 'xs': return '100%'
+          case 'sm': return '70%'
+          case 'md': return '80%'
+          case 'lg': return '70%'
+          case 'xl': return '60%'
+          default : return '100%'
+        }
+      },
+
       filteredProducts () {
         let filteredArrays = this.dataProduk
 
@@ -313,6 +411,28 @@
         const val = (value / 1).toFixed(2).replace('.', ',')
 
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      },
+
+      dialogOpen (item) {
+        this.dialog = true
+        this.detailProduct.name = item.name
+        this.detailProduct.description = item.description
+        this.detailProduct.price = item.price
+        this.detailProduct.picture = this.$file + item.picture
+      },
+
+      dialogClose () {
+        this.dialog = false
+        this.detailProduct.name = null
+        this.detailProduct.description = null
+        this.detailProduct.price = null
+        this.detailProduct.picture = null
+      },
+
+      addChart () {
+        if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
+          this.$router.push('/login/')
+        }
       },
     },
   }

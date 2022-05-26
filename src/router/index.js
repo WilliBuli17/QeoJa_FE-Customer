@@ -22,13 +22,25 @@ const router = new Router({
     layout('Default', [
       route('Dashboard'),
       route('Profil', null, 'profil'),
-      // route('Error', null, '*'),
+      route('Login', null, 'login'),
+      route('Error', null, '*'),
     ]),
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  return to.path.endsWith('/') ? next() : next(trailingSlash(to.path))
+  // console.log(localStorage.getItem('user'))
+  // console.log(localStorage.getItem('token'))
+  // console.log(sessionStorage.getItem('user'))
+  // console.log(sessionStorage.getItem('token'))
+
+  // if (to.name === 'Dashboard' && (!sessionStorage.getItem('token') || !localStorage.getItem('token'))) {
+  //   next({ name: 'Login' })
+  // } else if (to.name === 'Login' && (sessionStorage.getItem('token') || localStorage.getItem('token'))) {
+  //   next({ name: 'Dashboard' })
+  // } else {
+    return to.path.endsWith('/') ? next() : next(trailingSlash(to.path))
+  // }
 })
 
 export default router

@@ -1,10 +1,17 @@
 <template>
   <v-app>
-    <default-app-bar v-if="view" />
-    <Header v-else />
-    <default-view />
-    <Footer />
-    <default-settings />
+    <login v-if="loginView" />
+
+    <error v-else-if="errorView" />
+
+    <div v-else>
+      <default-app-bar v-if="navView" />
+      <Header v-else />
+
+      <default-view />
+      <Footer />
+      <default-settings />
+    </div>
   </v-app>
 </template>
 
@@ -25,10 +32,32 @@
         /* webpackChunkName: "default-settings" */
         './Settings'
       ),
+      Login: () => import(
+        /* webpackChunkName: "login" */
+        '../../views/Login'
+      ),
+      Error: () => import(
+        /* webpackChunkName: "error" */
+        '../../views/Error'
+      ),
     },
 
     computed: {
-      view () {
+      loginView () {
+        if (this.$route.path === '/login/') {
+          return true
+        }
+        return false
+      },
+
+      errorView () {
+        if (this.$route.name === 'Error') {
+          return true
+        }
+        return false
+      },
+
+      navView () {
         if (this.$route.path === '/') {
           return true
         }

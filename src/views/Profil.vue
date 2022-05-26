@@ -6,7 +6,7 @@
     <v-row>
       <v-col
         cols="12"
-        class="mb-10"
+        class="my-10"
       >
         <v-img
           class="br-10 d-flex cover-img align-end"
@@ -52,9 +52,9 @@
 
               </label>
               <div>
-                <h2 class="white--text text-md-left text-center mt-10">
+                <h1 class="white--text text-md-left text-center mt-10">
                   Abriella Bond
-                </h2>
+                </h1>
               </div>
             </div>
           </div>

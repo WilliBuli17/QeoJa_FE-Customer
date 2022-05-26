@@ -9,8 +9,8 @@
       <v-container class="d-flex align-center">
         <v-btn
           text
-          transparent
           dark
+          class="no-background-hover"
           to="/"
         >
           <v-avatar
@@ -29,8 +29,8 @@
         <v-btn
           light
           text
-          tile
-          :to="'/profil'"
+          class="no-background-hover"
+          :to="setLink('Account')"
         >
           <v-icon class="me-0 me-sm-3">
             mdi-account-circle-outline
@@ -43,7 +43,7 @@
           text
           tile
           class="me-2"
-          @click="shoppingCartDrawer = true"
+          @click="setLink('Cart')"
         >
           <v-icon small>
             mdi-cart-outline
@@ -64,7 +64,7 @@
           <v-btn
             icon
             color
-            @click.stop="shoppingCartDrawer = !shoppingCartDrawer"
+            @click.stop="shoppingCartDrawer = false"
           >
             <v-icon color="primary">
               mdi-close
@@ -97,6 +97,22 @@
         dialog: false,
         shoppingCartDrawer: false,
       }
+    },
+
+    methods: {
+      setLink (value) {
+        if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
+          if (value === 'Account') {
+            return '/login/'
+          } else if (value === 'Cart') {
+            this.$router.push('/login/')
+          }
+        } else if (value === 'Account') {
+          return '/profil/'
+        } else if (value === 'Cart') {
+          this.shoppingCartDrawer = true
+        }
+      },
     },
   }
 </script>

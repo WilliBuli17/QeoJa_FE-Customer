@@ -2,12 +2,15 @@
   <div class="hero-section">
     <Header :class="toggleNavClass()" />
 
-    <div id="navbar-hero">
+    <div
+      id="navbar-hero"
+    >
       <v-container>
         <div class="d-flex align-center mt-6 mb-16  navbar-container">
           <v-btn
             text
-            transparent
+            dark
+            class="no-background-hover"
             to="/"
           >
             <v-avatar tile>
@@ -23,8 +26,8 @@
           <v-btn
             dark
             text
-            tile
-            :to="'/profil'"
+            class="no-background-hover"
+            :to="setLink('Account')"
           >
             <v-icon class="me-0 me-sm-3">
               mdi-account-circle-outline
@@ -37,7 +40,7 @@
             text
             tile
             class="me-2"
-            @click="shoppingCartDrawer = true"
+            @click="setLink('Cart')"
           >
             <v-icon
               color="white"
@@ -59,7 +62,7 @@
                 <v-btn
                   icon
                   color
-                  @click.stop="shoppingCartDrawer = !shoppingCartDrawer"
+                  @click="shoppingCartDrawer = false"
                 >
                   <v-icon color="primary">
                     mdi-close
@@ -135,6 +138,20 @@
           return 'sticky-nav'
         }
       },
+
+      setLink (value) {
+        if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
+          if (value === 'Account') {
+            return '/login/'
+          } else if (value === 'Cart') {
+            this.$router.push('/login/')
+          }
+        } else if (value === 'Account') {
+          return '/profil/'
+        } else if (value === 'Cart') {
+          this.shoppingCartDrawer = true
+        }
+      },
     },
   }
 </script>
@@ -146,6 +163,5 @@
     .nav {
       display: none;
     }
-
   }
 </style>

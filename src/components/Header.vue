@@ -30,7 +30,7 @@
           light
           text
           class="no-background-hover"
-          :to="setLink('Account')"
+          :to="'/profil/'"
         >
           <v-icon class="me-0 me-sm-3">
             mdi-account-circle-outline
@@ -43,7 +43,7 @@
           text
           tile
           class="me-2"
-          @click="setLink('Cart')"
+          @click="setLink()"
         >
           <v-icon small>
             mdi-cart-outline
@@ -100,16 +100,10 @@
     },
 
     methods: {
-      setLink (value) {
+      setLink () {
         if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
-          if (value === 'Account') {
-            return '/login/'
-          } else if (value === 'Cart') {
-            this.$router.push('/login/')
-          }
-        } else if (value === 'Account') {
-          return '/profil/'
-        } else if (value === 'Cart') {
+          this.$router.push('/login/')
+        } else {
           this.shoppingCartDrawer = true
         }
       },

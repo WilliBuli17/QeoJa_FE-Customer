@@ -279,7 +279,7 @@
   import ApiService from '../service/ApiService'
 
   export default {
-    name: 'DashboardView',
+    name: 'Dashboard',
 
     data: () => ({
       apiService: new ApiService(),

@@ -64,7 +64,6 @@
                         <v-row>
                           <v-col
                             cols="12"
-                            sm="7"
                           >
                             <v-checkbox
                               v-model="checkbox"
@@ -299,7 +298,7 @@
       ],
       passwordRules: [
         v => !!v || 'Password Harus Diisi',
-        v => (v && v.length >= 8) || 'Password 8 Karakter',
+        v => (v && v.length >= 8) || 'Password Minimal 8 Karakter',
       ],
       show: false,
       apiService: new ApiService(),
@@ -322,14 +321,6 @@
 
       async setForm (actions) {
         let result
-
-        // localStorage.removeItem('user')
-        // localStorage.removeItem('token')
-
-        // console.log(localStorage.getItem('user'))
-        // console.log(localStorage.getItem('token'))
-        // console.log(sessionStorage.getItem('user'))
-        // console.log(sessionStorage.getItem('token'))
 
         if (actions === 'Register') {
           if (this.$refs.form.validate()) {
@@ -364,6 +355,8 @@
                 sessionStorage.setItem('user', result.data.data)
                 sessionStorage.setItem('token', result.data.access_token)
               }
+
+              this.$router.push('/')
             }
 
             this.alert(result.data.status, result.data.message)

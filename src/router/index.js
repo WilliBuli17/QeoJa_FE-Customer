@@ -34,13 +34,23 @@ router.beforeEach((to, from, next) => {
   // console.log(sessionStorage.getItem('user'))
   // console.log(sessionStorage.getItem('token'))
 
-  // if (to.name === 'Dashboard' && (!sessionStorage.getItem('token') || !localStorage.getItem('token'))) {
-  //   next({ name: 'Login' })
-  // } else if (to.name === 'Login' && (sessionStorage.getItem('token') || localStorage.getItem('token'))) {
-  //   next({ name: 'Dashboard' })
-  // } else {
+  // localStorage.removeItem('user')
+  // localStorage.removeItem('token')
+
+  let checkers = false
+  if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
+    checkers = true
+  } else {
+    checkers = false
+  }
+
+  if (to.name === 'Profil' && checkers === true) {
+    next({ name: 'Login' })
+  } else if (to.name === 'Login' && checkers === false) {
+    next({ name: 'Dashboard' })
+  } else {
     return to.path.endsWith('/') ? next() : next(trailingSlash(to.path))
-  // }
+  }
 })
 
 export default router

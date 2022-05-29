@@ -1,22 +1,23 @@
 <template>
-  <v-btn
+  <v-text-field
     :color="color"
+    :label="label"
+    required
     v-bind="$attrs"
     v-on="$listeners"
-  >
-    <slot />
-  </v-btn>
+  />
 </template>
 
 <script>
   export default {
-    name: 'AppBtn',
+    name: 'AppTextInputComponent',
 
     props: {
       color: {
         type: String,
         default: 'primary',
       },
+      label: String,
     },
   }
 </script>

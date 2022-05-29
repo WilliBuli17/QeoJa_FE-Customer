@@ -1,5 +1,5 @@
 <template>
-  <Subcard
+  <app-sub-card-component
     v-bind="$attrs"
     class="v-card--material mt-4"
   >
@@ -67,12 +67,17 @@
         <slot name="actions" />
       </v-card-actions>
     </template>
-  </Subcard>
+  </app-sub-card-component>
 </template>
 
 <script>
+  import AppSubCardComponent from './AppSubCardComponent'
+
   export default {
-    name: 'MaterialCard',
+    name: 'AppMaterialCardComponent',
+    components: {
+      AppSubCardComponent,
+    },
 
     props: {
       color: String,

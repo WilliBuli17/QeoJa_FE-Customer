@@ -270,7 +270,7 @@
   import ApiService from '../service/ApiService'
 
   export default {
-    name: 'Login',
+    name: 'LoginView',
 
     data: () => ({
       expand: true,

@@ -8,5 +8,5 @@
 </template>
 
 <script>
-  export default { name: 'Subcard' }
+  export default { name: 'AppSubCardComponent' }
 </script>

@@ -31,7 +31,7 @@
 
 <script>
   export default {
-    name: 'Card',
+    name: 'AppCardProductComponent',
 
     props: {
       cardSection: Object,

@@ -10,7 +10,7 @@
           Filter
         </h4>
 
-        <v-btn
+        <app-btn-component
           icon
           tile
           class="mobile-box-btn-sidebar ms-auto mt-n3"
@@ -19,7 +19,7 @@
           <v-icon color="primary">
             mdi-close
           </v-icon>
-        </v-btn>
+        </app-btn-component>
       </v-row>
 
       <v-divider />
@@ -37,7 +37,7 @@
         align="end"
         justify="end"
       >
-        <v-btn
+        <app-btn-component
           small
           color="primary"
           class="mobile-box-btn text-capitalize mx-10"
@@ -48,7 +48,7 @@
             mdi-filter-outline
           </v-icon>
           <span>Filter</span>
-        </v-btn>
+        </app-btn-component>
       </v-row>
 
       <slot name="boxContent" />
@@ -63,8 +63,15 @@
 </template>
 
 <script>
+  import AppBtnComponent from './AppBtnComponent'
+
   export default {
-    name: 'Box',
+    name: 'AppBoxComponent',
+
+    components: {
+      AppBtnComponent,
+    },
+
     data () {
       return {
         isOpen: false,
@@ -75,18 +82,22 @@
 
 <style lang="scss" scoped>
   $sidebarWidth: 300px;
+
   .mobile-box-btn-sidebar{
       display: none;
       @media (max-width: 1903px){
           display: block;
       }
   }
+
   .hidden {
       visibility: hidden;
   }
+
   .visible {
     visibility: visible;
   }
+
   .box-wrapper {
     display: flex;
     position: relative;
@@ -106,6 +117,7 @@
         }
       }
     }
+
     .box-overlay {
       position: fixed;
       display: none;
@@ -122,6 +134,7 @@
         display: block;
       }
     }
+
     .box-content {
       .mobile-box-btn {
         display: none;
@@ -136,6 +149,7 @@
       }
     }
   }
+
   .mobile-divider {
     display: block;
     @media (max-width: 1903px){

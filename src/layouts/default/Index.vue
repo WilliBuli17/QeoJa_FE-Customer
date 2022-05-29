@@ -4,14 +4,9 @@
 
     <error v-else-if="errorView" />
 
-    <div v-else>
-      <default-app-bar v-if="navView" />
-      <Header v-else />
+    <default-view v-else />
 
-      <default-view />
-      <Footer />
-      <default-settings />
-    </div>
+    <default-settings />
   </v-app>
 </template>
 
@@ -20,10 +15,6 @@
     name: 'DefaultLayout',
 
     components: {
-      DefaultAppBar: () => import(
-        /* webpackChunkName: "default-app-bar" */
-        './AppBar.vue'
-      ),
       DefaultView: () => import(
         /* webpackChunkName: "default-view" */
         './View'
@@ -52,13 +43,6 @@
 
       errorView () {
         if (this.$route.name === 'Error') {
-          return true
-        }
-        return false
-      },
-
-      navView () {
-        if (this.$route.path === '/') {
           return true
         }
         return false

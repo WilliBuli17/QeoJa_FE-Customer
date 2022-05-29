@@ -1,7 +1,10 @@
 <template>
-  <v-text-field
+  <v-autocomplete
     :color="color"
     :label="label"
+    persistent-hint
+    :return-object="false"
+    :placeholder="label"
     required
     v-bind="$attrs"
     v-on="$listeners"
@@ -10,7 +13,7 @@
 
 <script>
   export default {
-    name: 'TextInput',
+    name: 'AppTextAutocompleteComponent',
 
     props: {
       color: {

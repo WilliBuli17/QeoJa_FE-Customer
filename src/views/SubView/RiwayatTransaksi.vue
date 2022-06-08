@@ -739,6 +739,7 @@
         const result = await this.apiService.storeData(this.$http, `transaction/${this.form.id}`, transaction)
 
         this.loadingButton = false
+        this.alert(result.data.status, result.data.message)
         this.read()
         this.dialogClose()
       },

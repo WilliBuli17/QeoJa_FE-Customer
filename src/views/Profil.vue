@@ -16,7 +16,7 @@
           <v-img
             class="br-10 d-flex cover-img align-end"
             cover
-            :src="require('../assets/images/cover-img.png')"
+            :src="require('../assets/header-bg 2.png')"
             gradient="to top, rgba(0,0,0,.7), rgba(0,0,0,0)"
           >
             <div class="d-flex justify-center justify-md-space-between align-center mx-10 cover-image-content ">
@@ -79,8 +79,8 @@
             v-slot="{ active, toggle }"
           >
             <app-btn-component
-              dense
-              class="mx-3"
+              :active-class="($vuetify.theme.dark) ? 'bg-active' : 'bg-active-light'"
+              class="mx-3 font-weight-medium"
               text
               :input-value="active"
               @click="toggle"
@@ -117,7 +117,10 @@
                 :data-kota="dataKota"
               />
 
-              <transaksi v-else-if="n.name === 'Transaksi' && dataCustomer.name !== null && dataKota.length > 0" />
+              <riwayat-transaksi
+                v-else-if="n.name === 'Riwayat Transaksi' && dataCustomer.name !== null && dataKota.length > 0"
+                :customer="dataCustomer.id"
+              />
 
               <div v-else>
                 <app-progress-loading-component />
@@ -142,9 +145,9 @@
 
 <script>
   import ApiService from '../service/ApiService'
-  import Account from './SubProfil/Account'
-  import Alamat from './SubProfil/Alamat'
-  import Transaksi from './SubProfil/Transaksi'
+  import Account from './SubView/Account'
+  import Alamat from './SubView/Alamat'
+  import RiwayatTransaksi from './SubView/RiwayatTransaksi'
   import AppBtnComponent from '../components/AppBtnComponent'
   import AppProgressLoadingComponent from '../components/AppProgressLoadingComponent'
   import AppSnackBarComponent from '../components/AppSnackBarComponent'
@@ -157,7 +160,7 @@
     components: {
       Account,
       Alamat,
-      Transaksi,
+      RiwayatTransaksi,
       AppBtnComponent,
       AppProgressLoadingComponent,
       AppSnackBarComponent,
@@ -190,7 +193,7 @@
         },
         {
           id: 2,
-          name: 'Transaksi',
+          name: 'Riwayat Transaksi',
         },
       ],
       window: 0,
@@ -262,3 +265,12 @@
     },
   }
 </script>
+
+<style lang="scss" scoped>
+.bg-active-light {
+  color : #9C27b0 !important;
+}
+.bg-active {
+  color : #c761da !important;
+}
+</style>

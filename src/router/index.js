@@ -23,20 +23,13 @@ const router = new Router({
       route('Dashboard'),
       route('Profil', null, 'profil'),
       route('Login', null, 'login'),
+      route('Transaksi', null, 'transaksi'),
       route('Error', null, '*'),
     ]),
   ],
 })
 
 router.beforeEach((to, from, next) => {
-  // console.log(localStorage.getItem('user'))
-  // console.log(localStorage.getItem('token'))
-  // console.log(sessionStorage.getItem('user'))
-  // console.log(sessionStorage.getItem('token'))
-
-  // localStorage.removeItem('user')
-  // localStorage.removeItem('token')
-
   let checkers = false
   if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
     checkers = true

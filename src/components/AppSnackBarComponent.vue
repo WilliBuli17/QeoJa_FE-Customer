@@ -3,9 +3,7 @@
     :color="color"
     timeout="3000"
     bottom
-    right
-    text
-    outlined
+    center
     v-bind="$attrs"
     v-on="$listeners"
   >

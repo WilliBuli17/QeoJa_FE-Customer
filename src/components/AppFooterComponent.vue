@@ -1,16 +1,16 @@
 <template>
-  <footer class="grey lighten-2 py-16">
-    <v-container>
+  <footer :class="(this.$vuetify.theme.dark) ? '#121212' : '#FFFFFF'">
+    <v-container class="py-16">
+      <v-divider />
+
       <v-row>
         <v-col
           cols="12"
-          md="6"
           lg="4"
         >
           <v-avatar
-            class="mb-6"
             tile
-            size="48"
+            size="100"
           >
             <img
               src="../assets/logo.png"
@@ -18,7 +18,7 @@
             >
           </v-avatar>
 
-          <h5 class="mb-6 font-weight-regular footer-color ">
+          <h5 class="mb-6 font-weight-regular">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor libero id et, in gravida.
             Sit diam duis mauris nulla cursus. Erat et lectus vel ut sollicitudin elit at amet.
           </h5>
@@ -26,61 +26,30 @@
 
         <v-col
           cols="12"
-          md="6"
           lg="4"
-        >
-          <h2 class="f-600 mb-4">
-            About Us
-          </h2>
-
-          <div class="d-flex flex-column">
-            <a
-              text
-              dark
-              to=""
-              class="footer-link"
-            >
-              Careers
-            </a>
-            <a
-              text
-              dark
-              to=""
-              class="footer-link"
-            >
-              Our Stores
-            </a>
-            <a
-              text
-              dark
-              to=""
-              class="footer-link"
-            >
-              Our Cares
-            </a>
-          </div>
-        </v-col>
+        />
 
         <v-col
+          class="mt-5"
           cols="12"
           md="6"
           lg="4"
         >
           <h2 class="f-600 mb-4">
-            Contact Us
+            Kontak kami
           </h2>
 
           <div class="d-flex flex-column">
-            <p class="mb-3 footer-color">
-              Jalalabad 20/1, Shah Farid Road Sylhet,
+            <p class="mb-3">
+              Alak, Kota Kupang, NTT.
             </p>
 
-            <p class="mb-3 footer-color">
-              Email: uilib@gmail.com
+            <p class="mb-3">
+              Email: qeoja@mail.com
             </p>
 
-            <p class="mb-6 footer-color">
-              Phone: +880 1123 456 780
+            <p class="mb-6">
+              Phone: (021) 123456789
             </p>
           </div>
         </v-col>
@@ -94,17 +63,3 @@
     name: 'Footer',
   }
 </script>
-
-<style lang="scss" scoped>
-.footer-color{
-    color: #4B566B;
-}
-.footer-link{
-    text-decoration: none;
-    color: #4B566B !important;
-    margin-bottom: 12px;
-    &:hover {
-        color: #D23F57 !important;
-    }
-}
-</style>

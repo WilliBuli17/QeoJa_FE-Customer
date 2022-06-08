@@ -22,7 +22,7 @@
         v-for="index in dataCart"
         :key="index.name"
       >
-        <div class="d-flex align-center justify-space-between pa-3 mb-4">
+        <div class="d-flex align-center justify-space-between pa-3 my-4">
           <div class="d-flex align-center">
             <div class="text-center me-5">
               <v-btn
@@ -35,7 +35,7 @@
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
 
-              <p class="my-1">
+              <p class="my-2">
                 {{ index.amount_of_product }}
               </p>
 
@@ -80,6 +80,13 @@
                   `Rp. ${formatExample(index.price * index.amount_of_product)}`
                 }}
               </h5>
+
+              <h5
+                v-if="checksQuantity(index.amount_of_product, index.stock_quantity)"
+                class="red--text mt-2"
+              >
+                Stok Produk Sisa {{ index.stock_quantity }}.
+              </h5>
             </div>
           </div>
 
@@ -90,8 +97,18 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </div>
+
+        <v-divider />
       </div>
     </div>
+
+    <app-snack-bar-component
+      v-model="snackbar"
+      :color="color"
+      :title="title"
+      :subtitle="subtitle"
+      :multi-line="multiLine"
+    />
   </div>
 </template>
 
@@ -108,6 +125,11 @@
     data: () => ({
       apiService: new ApiService(),
       dataKeranjang: [],
+      color: null,
+      title: null,
+      subtitle: null,
+      snackbar: false,
+      multiLine: true,
     }),
 
     watch: {
@@ -118,6 +140,21 @@
     },
 
     methods: {
+      alert (status, message) {
+        this.color = status === 'success' ? 'success' : 'error'
+        this.title = status
+        this.subtitle = message
+        this.snackbar = true
+      },
+
+      checksQuantity (amountoOfProduct, stockQuantity) {
+        if (amountoOfProduct > stockQuantity) {
+          return true
+        } else {
+          return false
+        }
+      },
+
       formatExample (value) {
         const val = (value / 1).toFixed(2).replace('.', ',')
         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
@@ -131,7 +168,10 @@
           cart.append('amount_of_product', action === 'add' ? 1 : -1)
           cart.append('customer_id', item.customer_id)
           cart.append('product_id', item.product_id)
-          await this.apiService.storeData(this.$http, 'cart', cart)
+          const result = await this.apiService.storeData(this.$http, 'cart', cart)
+          if (result.data.status === 'warning') {
+            this.alert(result.data.status, result.data.message)
+          }
         }
         this.$emit('clicked-item-cart', null)
       },

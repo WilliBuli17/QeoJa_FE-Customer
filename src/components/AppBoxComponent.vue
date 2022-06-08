@@ -3,7 +3,7 @@
     <div
       class="box-sidebar border-r"
       :class="{ 'open': isOpen }"
-      :style="`background-color: ${(this.$vuetify.theme.dark) ? '#121212' : '#EEEEEE'}`"
+      :style="`background-color: ${(this.$vuetify.theme.dark) ? '#121212' : '#FFFFFF'}`"
     >
       <v-row>
         <h4 class="text-h4 mobile-box-btn-sidebar ms-auto font-weight-medium">

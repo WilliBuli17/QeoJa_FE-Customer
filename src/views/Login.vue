@@ -46,13 +46,13 @@
                         ref="formLogin"
                         lazy-validation
                       >
-                        <TextInput
+                        <app-text-input-component
                           v-model="formLogin.email"
                           :rules="emailRules"
                           label="Email"
                         />
 
-                        <TextInput
+                        <app-text-input-component
                           v-model="formLogin.password"
                           :rules="passwordRules"
                           label="Password"
@@ -74,15 +74,14 @@
                           </v-col>
                         </v-row>
 
-                        <v-btn
-                          color="primary"
+                        <app-btn-component
                           dark
                           block
                           :loading="loadingButton"
                           @click="setForm('Login')"
                         >
                           Log in
-                        </v-btn>
+                        </app-btn-component>
                       </v-form>
                     </v-col>
                   </v-row>
@@ -98,8 +97,8 @@
                   <v-card-text class="white--text">
                     <v-avatar
                       class="mb-6"
-                      tile
-                      size="80"
+                      color="grey lighten-3"
+                      size="250"
                     >
                       <img
                         src="../assets/logo.png"
@@ -119,13 +118,14 @@
                   </v-card-text>
 
                   <div class="text-center">
-                    <v-btn
+                    <app-btn-component
+                      color="white"
                       outlined
                       dark
                       @click="expand = !expand"
                     >
                       Register
-                    </v-btn>
+                    </app-btn-component>
                   </div>
                 </div>
               </v-col>
@@ -152,8 +152,8 @@
                   <v-card-text class="white--text">
                     <v-avatar
                       class="mb-6"
-                      tile
-                      size="80"
+                      color="grey lighten-3"
+                      size="250"
                     >
                       <img
                         src="../assets/logo.png"
@@ -173,13 +173,14 @@
                   </v-card-text>
 
                   <div class="text-center">
-                    <v-btn
+                    <app-btn-component
+                      color="white"
                       outlined
                       dark
                       @click="expand = !expand"
                     >
                       Log in
-                    </v-btn>
+                    </app-btn-component>
                   </div>
                 </div>
               </v-col>
@@ -208,25 +209,25 @@
                         ref="form"
                         lazy-validation
                       >
-                        <TextInput
+                        <app-text-input-component
                           v-model="form.name"
                           :rules="nameRules"
                           label="Name"
                         />
 
-                        <TextInput
+                        <app-text-input-component
                           v-model="form.email"
                           :rules="emailRules"
                           label="Email"
                         />
 
-                        <TextInput
+                        <app-text-input-component
                           v-model="form.phone"
                           :rules="phoneRules"
                           label="Phone"
                         />
 
-                        <TextInput
+                        <app-text-input-component
                           v-model="form.password"
                           :rules="passwordRules"
                           label="Password"
@@ -235,16 +236,15 @@
                           @click:append="show = !show"
                         />
 
-                        <v-btn
+                        <app-btn-component
                           class="mt-16"
-                          color="primary"
                           dark
                           block
                           :loading="loadingButton"
                           @click="setForm('Register')"
                         >
                           Sign up
-                        </v-btn>
+                        </app-btn-component>
                       </v-form>
                     </v-col>
                   </v-row>
@@ -256,7 +256,7 @@
       </v-col>
     </v-row>
 
-    <Snackalertbar
+    <app-snack-bar-component
       v-model="snackbar"
       :color="color"
       :title="title"
@@ -267,10 +267,17 @@
 </template>
 
 <script>
+  import AppSnackBarComponent from '../components/AppSnackBarComponent'
+  import AppTextInputComponent from '../components/AppTextInputComponent'
   import ApiService from '../service/ApiService'
 
   export default {
     name: 'LoginView',
+
+    components: {
+      AppTextInputComponent,
+      AppSnackBarComponent,
+    },
 
     data: () => ({
       expand: true,
@@ -342,6 +349,7 @@
             this.loadingButton = true
 
             const customer = new FormData()
+            customer.append('reference', 'customer')
             customer.append('email', this.formLogin.email)
             customer.append('password', this.formLogin.password)
 

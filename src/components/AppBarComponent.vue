@@ -1,129 +1,132 @@
 <template>
-  <div class="hero-section">
-    <app-header-component
-      :class="toggleNavClass()"
-      :data-customer="dataCustomer"
-    />
+  <div class="bg-opacity">
+    <v-overlay :value="overlay">
+      <app-progress-loading-component />
+    </v-overlay>
 
-    <div id="navbar-hero">
-      <v-container>
-        <div class="d-flex align-center mt-6 mb-16 navbar-container">
-          <app-btn-component
-            text
-            dark
-            color="white"
-            class="no-background-hover"
-            to="/"
-          >
-            <v-avatar tile>
-              <img
-                src="../assets/logo.png"
-                alt=""
-              >
-            </v-avatar>
-          </app-btn-component>
+    <div class="content">
+      <app-header-component
+        v-if="!overlay"
+        :class="toggleNavClass()"
+        :data-customer="dataCustomer"
+      />
 
-          <v-spacer />
-
-          <app-btn-component
-            dark
-            text
-            color="white"
-            class="no-background-hover"
-            to="/profil/"
-          >
-            <v-icon class="me-0 me-sm-3">
-              mdi-account-circle-outline
-            </v-icon>
-            <span class="d-none d-sm-block">Account</span>
-          </app-btn-component>
-
-          <app-btn-component
-            dark
-            text
-            tile
-            color="white"
-            class="no-background-hover"
-            @click="setLink()"
-          >
-            <v-icon class="me-0 me-sm-3">
-              mdi-cart-outline
-            </v-icon>
-            <span class="d-none d-sm-block">Cart</span>
-          </app-btn-component>
-
-          <v-navigation-drawer
-            v-model="shoppingCartDrawer"
-            width="500"
-            fixed
-            temporary
-            right
-          >
-            <app-shopping-cart-component
-              :data-cart="dataCart"
-              @clicked-item-cart="setLink"
+      <div id="navbar-hero">
+        <v-container>
+          <div class="d-flex align-center mt-6 mb-16 navbar-container">
+            <app-btn-component
+              text
+              dark
+              color="white"
+              class="no-background-hover"
+              to="/"
             >
-              <template v-slot:userDrawerCloseButton>
-                <app-btn-component
-                  icon
-                  color
-                  @click="shoppingCartDrawer = false"
+              <v-avatar
+                size="100"
+                color="grey lighten-3"
+              >
+                <img
+                  src="../assets/logo.png"
+                  alt=""
                 >
-                  <v-icon color="primary">
-                    mdi-close
-                  </v-icon>
-                </app-btn-component>
-              </template>
-            </app-shopping-cart-component>
+              </v-avatar>
+            </app-btn-component>
 
-            <template v-slot:append>
-              <div class="pa-2">
-                <app-btn-component
-                  class="text-capitalize mb-3"
-                  block
-                  color="primary"
-                >
-                  Checkout Now
-                </app-btn-component>
-              </div>
-            </template>
-          </v-navigation-drawer>
+            <v-spacer />
+
+            <app-account-component
+              :dark="true"
+              @load="loadOverlay"
+            />
+
+            <app-btn-component
+              dark
+              text
+              tile
+              color="white"
+              class="no-background-hover"
+              @click="setLink()"
+            >
+              <v-icon class="me-0 me-sm-3">
+                mdi-cart-outline
+              </v-icon>
+              <span class="d-none d-sm-block">Cart</span>
+            </app-btn-component>
+
+            <v-navigation-drawer
+              v-model="shoppingCartDrawer"
+              width="500"
+              fixed
+              temporary
+              right
+            >
+              <app-shopping-cart-component
+                :data-cart="dataCart"
+                @clicked-item-cart="setLink"
+              >
+                <template v-slot:userDrawerCloseButton>
+                  <app-btn-component
+                    icon
+                    color
+                    @click="shoppingCartDrawer = false"
+                  >
+                    <v-icon color="primary">
+                      mdi-close
+                    </v-icon>
+                  </app-btn-component>
+                </template>
+              </app-shopping-cart-component>
+
+              <template v-slot:append>
+                <div class="pa-2">
+                  <app-btn-component
+                    class="text-capitalize mb-3"
+                    block
+                    to="/transaksi/"
+                    :disabled="disabled"
+                  >
+                    Beli
+                  </app-btn-component>
+                </div>
+              </template>
+            </v-navigation-drawer>
+          </div>
+        </v-container>
+      </div>
+
+      <v-container>
+        <div class="mt-16">
+          <v-row>
+            <v-col
+              cols="12"
+              xl="5"
+              class="mx-auto"
+            >
+              <h2
+                class="white--text text-center text-h2 font-weight-regular mb-2"
+              >
+                Selamat Datang di
+                <span class="font-weight-bold">QeoJa</span>
+              </h2>
+
+              <h4 class="text-h4 white--text text-center font-weight-light mb-5">
+                Layanan Distibutor Barang Kelontong Terpercaya di NTT
+              </h4>
+            </v-col>
+          </v-row>
         </div>
       </v-container>
+
+      <app-snack-bar-component
+        v-model="snackbar"
+        :color="color"
+        :title="title"
+        :subtitle="subtitle"
+        :multi-line="multiLine"
+      />
+
+      <app-go-to-btn-component />
     </div>
-
-    <v-container>
-      <div class="mt-16">
-        <v-row>
-          <v-col
-            cols="12"
-            xl="5"
-            class="mx-auto"
-          >
-            <h1
-              class="white--text text-center text-h3 font-weight-regular mb-4"
-            >
-              Discover the best food & drinks in
-              <span class="font-weight-bold">New York</span>
-            </h1>
-
-            <h4 class="text-h6 white--text text-center font-weight-light mb-5">
-              The meals you love, delivered with care
-            </h4>
-          </v-col>
-        </v-row>
-      </div>
-    </v-container>
-
-    <app-snack-bar-component
-      v-model="snackbar"
-      :color="color"
-      :title="title"
-      :subtitle="subtitle"
-      :multi-line="multiLine"
-    />
-
-    <app-go-to-btn-component />
   </div>
 </template>
 
@@ -134,6 +137,7 @@
   import AppSnackBarComponent from '../components/AppSnackBarComponent'
   import AppGoToBtnComponent from './AppGoToBtnComponent'
   import ApiService from '../service/ApiService'
+  import AppAccountComponent from './AppAccountComponent'
 
   export default {
     name: 'AppBarComponent',
@@ -144,6 +148,7 @@
       AppShoppingCartComponent,
       AppSnackBarComponent,
       AppGoToBtnComponent,
+      AppAccountComponent,
     },
 
     props: {
@@ -161,6 +166,8 @@
       dialog: false,
       shoppingCartDrawer: false,
       dataCart: [],
+      disabled: false,
+      overlay: false,
     }),
 
     mounted () {
@@ -174,6 +181,10 @@
     },
 
     methods: {
+      loadOverlay () {
+        this.overlay = !this.overlay
+      },
+
       alert (status, message) {
         this.color = status === 'success' ? 'success' : 'error'
         this.title = status
@@ -197,7 +208,15 @@
           if (result.data.data) {
             this.dataCart = result.data.data
             this.shoppingCartDrawer = true
-            this.alert(result.data.status, result.data.message)
+
+            for (let i = 0; i < this.dataCart.length; i++) {
+              if (this.dataCart[i].stock_quantity < this.dataCart[i].amount_of_product) {
+                this.disabled = true
+                break
+              } else {
+                this.disabled = false
+              }
+            }
           } else {
             this.shoppingCartDrawer = false
             this.alert('fails', 'Data Kosong')
@@ -209,11 +228,31 @@
 </script>
 
 <style lang="scss" scoped>
-.hero-section {
-  background-image: url("../assets/header-bg.png");
-  background-size: cover;
+.bg-opacity{
+    position: relative;
+    background-color: #000;
   .nav {
     display: none;
   }
+}
+
+.bg-opacity::before{
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.4;
+    background-image: url("../assets/header-bg.png");
+    background-size: cover;
+}
+
+.content{
+  position: relative;
+  width: 100%;
+  height: 450px;
 }
 </style>

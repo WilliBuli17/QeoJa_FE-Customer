@@ -19,7 +19,7 @@
               <div>
                 <div class="my-10">
                   <h5 class="text-h5">
-                    Categories
+                    Kategori
                   </h5>
                   <v-radio-group v-model="radioGroup">
                     <v-radio
@@ -35,8 +35,16 @@
 
                 <div class="my-10">
                   <h5 class="text-h5">
-                    Suppliers
+                    Supplier
                   </h5>
+                  <v-checkbox
+                    v-model="selectedAll"
+                    class="mt-2"
+                    label="Selected All"
+                    color="primary"
+                    hide-details=""
+                  />
+
                   <v-checkbox
                     v-for="i in dataSupplier"
                     :key="i.name"
@@ -49,9 +57,9 @@
                   />
                 </div>
 
-                <div class="my-10">
+                <div class="my-10 pe-3">
                   <h5 class="text-h5">
-                    Cost per person
+                    Kisaran harga
                   </h5>
                   <v-range-slider
                     v-model="range"
@@ -104,7 +112,7 @@
                         sm="12"
                       >
                         <h4 class="text-h4">
-                          184 Produk Ditampilkan
+                          {{ filteredProducts.length }} Produk Ditampilkan
                         </h4>
                       </v-col>
 
@@ -125,7 +133,7 @@
                   </v-col>
 
                   <v-col
-                    v-for="(item, index) in filteredProducts"
+                    v-for="(item, index) in productsPaginate"
                     :key="index"
                     cols="12"
                     xl="3"
@@ -140,7 +148,7 @@
                         <app-btn-component
                           text
                           width="50%"
-                          class="mb-5 mt-4"
+                          class="mb-5 mt-4 font-weight-medium"
                           @click="dialogOpen(item)"
                         >
                           <v-icon left>
@@ -175,10 +183,9 @@
                     class="mt-3"
                   >
                     <v-pagination
-                      v-if="Math.ceil(dataProduk.length/perPage) > 1"
+                      v-if="Math.ceil(filteredProducts.length/perPage) > 1"
                       v-model="page"
-                      class="food-truck-pagination"
-                      :length="Math.ceil(dataProduk.length/perPage)"
+                      :length="Math.ceil(filteredProducts.length/perPage)"
                       circle
                     />
                   </v-col>
@@ -211,7 +218,7 @@
                 <v-col
                   cols="12"
                   sm="12"
-                  md="6"
+                  md="12"
                   lg="6"
                 >
                   <v-avatar
@@ -226,7 +233,7 @@
                   class="text-left"
                   cols="12"
                   sm="12"
-                  md="6"
+                  md="12"
                   lg="6"
                 >
                   <v-card-title class="justify-center">
@@ -256,6 +263,7 @@
               <v-spacer />
               <app-btn-component
                 text
+                class="font-weight-medium"
                 @click="dialogClose"
               >
                 Close
@@ -317,7 +325,7 @@
       dataSupplier: [],
       dataKategori: [],
       page: 1,
-      perPage: 24,
+      perPage: 20,
       radioGroup: 'All',
       checkbox: [],
       range: [],
@@ -344,10 +352,10 @@
       widthDialog () {
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': return '100%'
-          case 'sm': return '70%'
-          case 'md': return '80%'
-          case 'lg': return '70%'
-          case 'xl': return '60%'
+          case 'sm': return '85%'
+          case 'md': return '75%'
+          case 'lg': return '65%'
+          case 'xl': return '55%'
           default : return '100%'
         }
       },
@@ -357,6 +365,10 @@
 
         filteredArrays = filteredArrays.filter(product => {
           return product.price >= this.range[0] && product.price <= this.range[1]
+        })
+
+        filteredArrays = filteredArrays.filter(product => {
+          return this.checkbox.includes(product.suplier)
         })
 
         if (this.search !== null) {
@@ -373,13 +385,25 @@
           })
         }
 
-        if (this.checkbox.length > 0) {
-          filteredArrays = filteredArrays.filter(product => {
-            return this.checkbox.includes(product.suplier)
-          })
-        }
+        return filteredArrays
+      },
 
-        return filteredArrays.slice((this.page - 1) * this.perPage, this.page * this.perPage)
+      productsPaginate () {
+        return this.filteredProducts.slice((this.page - 1) * this.perPage, this.page * this.perPage)
+      },
+
+      selectedAll: {
+        set (val) {
+          this.checkbox = []
+          if (val) {
+            for (let i = 0; i < this.dataSupplier.length; i++) {
+              this.checkbox.push(this.dataSupplier[i].name)
+            }
+          }
+        },
+        get () {
+          return this.checkbox.length === this.dataSupplier.length
+        },
       },
     },
 
@@ -399,25 +423,32 @@
 
       async read () {
         this.overlay = true
-        const result = await this.apiService.getData(this.$http, 'product')
+        const result = await this.apiService.getData(this.$http, 'productCustomer')
         await this.readUser()
-        this.dataProduk = result.data.data
-        this.max = this.dataProduk[this.dataProduk.length - 1].price
-        this.range = [this.min, this.max]
-        this.dataProduk.sort((a, b) => {
-          return a.price - b.price
-        })
+
+        if (result.data.status === 'success') {
+          this.dataProduk = result.data.data
+
+          this.min = Math.min(...this.dataProduk.map(({ price }) => price))
+          this.max = Math.max(...this.dataProduk.map(({ price }) => price))
+          this.range = [this.min, this.max]
+        }
+
         this.overlay = false
         this.alert(result.data.status, result.data.message)
       },
 
       async readSupplier () {
-        const result = await this.apiService.getData(this.$http, 'supplier')
+        const result = await this.apiService.getData(this.$http, 'supplierCustomer')
         this.dataSupplier = result.data.data
+
+        for (let i = 0; i < this.dataSupplier.length; i++) {
+          this.checkbox.push(this.dataSupplier[i].name)
+        }
       },
 
       async readKategori () {
-        const result = await this.apiService.getData(this.$http, 'category')
+        const result = await this.apiService.getData(this.$http, 'categoryCustomer')
         this.dataKategori = result.data.data
         this.dataKategori.push(
           {
@@ -459,20 +490,22 @@
       },
 
       async readUser () {
-        let result
+        if (sessionStorage.getItem('user') || localStorage.getItem('user')) {
+          let result
 
-        if (sessionStorage.getItem('user')) {
-          result = await this.apiService.getData(this.$http, `customer/${sessionStorage.getItem('user')}`)
-        } else {
-          result = await this.apiService.getData(this.$http, `customer/${localStorage.getItem('user')}`)
-        }
+          if (sessionStorage.getItem('user')) {
+            result = await this.apiService.getData(this.$http, `customer/${sessionStorage.getItem('user')}`)
+          } else if (localStorage.getItem('user')) {
+            result = await this.apiService.getData(this.$http, `customer/${localStorage.getItem('user')}`)
+          }
 
-        if (result.data.data) {
-          this.dataCustomer.id = result.data.data[0].id
-          this.dataCustomer.email = result.data.data[0].email
-          this.dataCustomer.name = result.data.data[0].name
-          this.dataCustomer.phone = result.data.data[0].phone
-          this.dataCustomer.picture = result.data.data[0].picture
+          if (result.data.data) {
+            this.dataCustomer.id = result.data.data[0].id
+            this.dataCustomer.email = result.data.data[0].email
+            this.dataCustomer.name = result.data.data[0].name
+            this.dataCustomer.phone = result.data.data[0].phone
+            this.dataCustomer.picture = result.data.data[0].picture
+          }
         }
       },
 
@@ -484,7 +517,10 @@
           cart.append('amount_of_product', 1)
           cart.append('customer_id', this.dataCustomer.id)
           cart.append('product_id', item.id)
-          await this.apiService.storeData(this.$http, 'cart', cart)
+          const result = await this.apiService.storeData(this.$http, 'cart', cart)
+          if (result.data.status === 'warning') {
+            this.alert(result.data.status, result.data.message)
+          }
         }
       },
     },

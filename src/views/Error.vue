@@ -11,7 +11,7 @@
         </h1>
 
         <div class="text-h4 pt-8 pb-10">
-          Page not found :(
+          Halaman Tidak Ditemukan :(
         </div>
 
         <v-btn
@@ -19,7 +19,7 @@
           large
           to="/"
         >
-          Get me out of here!
+          Kembali Ke Halaman Utama
         </v-btn>
       </v-col>
     </v-row>

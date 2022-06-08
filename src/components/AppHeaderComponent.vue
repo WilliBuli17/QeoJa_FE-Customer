@@ -1,102 +1,99 @@
 <template>
   <div>
-    <v-app-bar
-      fixed
-      color="white"
-      elevate-on-scroll
-      width="100%"
-    >
-      <v-container class="d-flex align-center">
-        <app-btn-component
-          text
-          dark
-          color="black"
-          class="no-background-hover"
-          to="/"
-        >
-          <v-avatar tile>
-            <img
-              src="../assets/logo.png"
-              alt=""
-            >
-          </v-avatar>
-        </app-btn-component>
+    <v-overlay :value="overlay">
+      <app-progress-loading-component />
+    </v-overlay>
 
-        <v-spacer />
-
-        <app-btn-component
-          dark
-          text
-          color="black"
-          class="no-background-hover"
-          to="/profil/"
-        >
-          <v-icon class="me-0 me-sm-3">
-            mdi-account-circle-outline
-          </v-icon>
-          <span class="d-none d-sm-block">Account</span>
-        </app-btn-component>
-
-        <app-btn-component
-          dark
-          text
-          tile
-          color="black"
-          class="no-background-hover"
-          @click="setLink()"
-        >
-          <v-icon class="me-0 me-sm-3">
-            mdi-cart-outline
-          </v-icon>
-          <span class="d-none d-sm-block">Cart</span>
-        </app-btn-component>
-      </v-container>
-    </v-app-bar>
-
-    <v-navigation-drawer
-      v-model="shoppingCartDrawer"
-      width="500"
-      fixed
-      temporary
-      right
-    >
-      <app-shopping-cart-component
-        :data-cart="dataCart"
-        @clicked-item-cart="setLink"
+    <div v-if="!overlay">
+      <v-app-bar
+        fixed
+        :color="(this.$vuetify.theme.dark) ? '#121212' : '#FFFFFF'"
+        elevate-on-scroll
+        width="100%"
       >
-        <template v-slot:userDrawerCloseButton>
+        <v-container class="d-flex align-center">
           <app-btn-component
-            icon
-            color
-            @click="shoppingCartDrawer = false"
+            text
+            :color="(this.$vuetify.theme.dark) ? '#FFFFFF' : '#121212'"
+            class="no-background-hover"
+            to="/"
           >
-            <v-icon color="primary">
-              mdi-close
+            <v-avatar size="80">
+              <img
+                src="../assets/logo.png"
+                alt=""
+              >
+            </v-avatar>
+          </app-btn-component>
+
+          <v-spacer />
+
+          <app-account-component
+            :dark="false"
+            @load="loadOverlay"
+          />
+
+          <app-btn-component
+            text
+            tile
+            :color="(this.$vuetify.theme.dark) ? '#FFFFFF' : '#121212'"
+            class="no-background-hover"
+            @click="setLink()"
+          >
+            <v-icon class="me-0 me-sm-3">
+              mdi-cart-outline
             </v-icon>
+            <span class="d-none d-sm-block">Cart</span>
           </app-btn-component>
+        </v-container>
+      </v-app-bar>
+
+      <v-navigation-drawer
+        v-model="shoppingCartDrawer"
+        width="500"
+        fixed
+        temporary
+        right
+      >
+        <app-shopping-cart-component
+          :data-cart="dataCart"
+          @clicked-item-cart="setLink"
+        >
+          <template v-slot:userDrawerCloseButton>
+            <app-btn-component
+              icon
+              color
+              @click="shoppingCartDrawer = false"
+            >
+              <v-icon color="primary">
+                mdi-close
+              </v-icon>
+            </app-btn-component>
+          </template>
+        </app-shopping-cart-component>
+
+        <template v-slot:append>
+          <div class="pa-2">
+            <app-btn-component
+              class="text-capitalize mb-3"
+              block
+              to="/transaksi/"
+              :disabled="disabled"
+            >
+              Beli
+            </app-btn-component>
+          </div>
         </template>
-      </app-shopping-cart-component>
+      </v-navigation-drawer>
 
-      <template v-slot:append>
-        <div class="pa-2">
-          <app-btn-component
-            class="text-capitalize mb-3"
-            block
-            color="primary"
-          >
-            Checkout Now
-          </app-btn-component>
-        </div>
-      </template>
-    </v-navigation-drawer>
-
-    <app-snack-bar-component
-      v-model="snackbar"
-      :color="color"
-      :title="title"
-      :subtitle="subtitle"
-      :multi-line="multiLine"
-    />
+      <app-snack-bar-component
+        v-model="snackbar"
+        :color="color"
+        :title="title"
+        :subtitle="subtitle"
+        :multi-line="multiLine"
+      />
+    </div>
   </div>
 </template>
 
@@ -104,6 +101,7 @@
   import AppBtnComponent from './AppBtnComponent'
   import AppShoppingCartComponent from './AppShoppingCartComponent'
   import ApiService from '../service/ApiService'
+  import AppAccountComponent from './AppAccountComponent'
 
   export default {
     name: 'AppHeaderComponent',
@@ -111,6 +109,7 @@
     components: {
       AppBtnComponent,
       AppShoppingCartComponent,
+      AppAccountComponent,
     },
 
     props: {
@@ -128,10 +127,16 @@
         dialog: false,
         shoppingCartDrawer: false,
         dataCart: [],
+        disabled: false,
+        overlay: false,
       }
     },
 
     methods: {
+      loadOverlay () {
+        this.overlay = !this.overlay
+      },
+
       alert (status, message) {
         this.color = status === 'success' ? 'success' : 'error'
         this.title = status
@@ -147,7 +152,15 @@
           if (result.data.data) {
             this.dataCart = result.data.data
             this.shoppingCartDrawer = true
-            this.alert(result.data.status, result.data.message)
+
+            for (let i = 0; i < this.dataCart.length; i++) {
+              if (this.dataCart[i].stock_quantity < this.dataCart[i].amount_of_product) {
+                this.disabled = true
+                break
+              } else {
+                this.disabled = false
+              }
+            }
           } else {
             this.shoppingCartDrawer = false
             this.alert('fails', 'Data Kosong')

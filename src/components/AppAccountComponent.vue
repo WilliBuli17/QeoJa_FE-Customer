@@ -55,7 +55,7 @@
           @click="profil"
         >
           <app-bar-item-component>
-            <v-list-item-title v-text="p.title" />
+            <v-list-item-title v-text="profilTitle(p.title)" />
           </app-bar-item-component>
         </app-btn-component>
       </template>
@@ -113,6 +113,14 @@
           this.$router.push('/login/')
         } else if (this.$route.path !== '/profil/') {
           this.$router.push('/profil/')
+        }
+      },
+
+      profilTitle (value) {
+        if (!sessionStorage.getItem('token') && !localStorage.getItem('token')) {
+          return 'Login'
+        } else {
+          return value
         }
       },
     },

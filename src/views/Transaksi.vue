@@ -421,7 +421,9 @@
       },
 
       async setForm () {
-        if (this.$refs.form.validate()) {
+        if (this.totalVolumeProduct < 5000000) {
+          this.alert('warning', 'Jumlah Pembelian Kurang Dri Ketentuan Minimal Pembelian')
+        } else if (this.$refs.form.validate()) {
           this.loadingButton = true
           const transaksi = new FormData()
           transaksi.append('subtotal_price', this.form.subTotal)

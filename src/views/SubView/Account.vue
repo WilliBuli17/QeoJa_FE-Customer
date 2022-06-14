@@ -65,7 +65,7 @@
                 >
                   <v-checkbox
                     v-model="checkbox"
-                    label="Change Password"
+                    label="Ubah Password"
                     color="primary"
                     @change="check($event)"
                   />
@@ -102,7 +102,7 @@
                     :rules="[
                       confirmPasswordRules.match(form.password, form.confirmPassword),
                     ]"
-                    label="Confirmasi Password"
+                    label="Konfirmasi Password"
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show ? 'text' : 'password'"
                     @click:append="show = !show"
@@ -123,7 +123,7 @@
                 :loading="loadingButton"
                 @click="setForm()"
               >
-                Save
+                Simpan
               </v-btn>
             </v-card-actions>
           </v-form>
@@ -194,7 +194,7 @@
       ],
       confirmPasswordRules: {
         match (pass, v) {
-          return (v && v === pass) || 'Confirmasi Password Tidak Sama'
+          return (v && v === pass) || 'Konfirmasi Password Tidak Sama'
         },
       },
       show: false,

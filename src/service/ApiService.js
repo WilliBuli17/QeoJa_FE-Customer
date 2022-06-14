@@ -1,7 +1,6 @@
 class ApiService {
   constructor () {
-    // this._url = 'http://127.0.0.1:8000/api/'
-    this._url = 'https://7ffa-180-249-206-70.ap.ngrok.io/api/'
+    this._url = 'http://127.0.0.1:8000/api/'
   }
 
   async storeData (http, sublink, data) {

@@ -32,6 +32,7 @@
             :headers="headers"
             :search="search"
             :items="dataTransaksi"
+            item-key="idKey"
           >
             <template v-slot:[`item.index`]="{ item }">
               {{ dataTransaksi.indexOf(item) + 1 }}
@@ -47,7 +48,7 @@
 
             <template v-slot:[`item.actions`]="{ item }">
               <app-btn-component
-                v-if="item.status === 'Menunggu Konfirmasi'"
+                v-if="item.status === 'Menunggu Konfirmasi' && showcheck(item.created_at)"
                 small
                 elevation="5"
                 class="ma-2 green accent-4"
@@ -236,10 +237,15 @@
                   lg="4"
                 >
                   <app-text-input-component
+                    v-if="showcheck(form.time) || form.status !== 'Transaksi Dibatalkan'"
                     v-model="form.bank"
                     label="Bank"
                     readonly
                   />
+
+                  <span v-else>
+                    Data Disembunyikan
+                  </span>
                 </v-col>
 
                 <v-col
@@ -363,7 +369,7 @@
 
                     <v-card
                       v-for="index in dataDetailTransaksi"
-                      :key="index.name"
+                      :key="index.id"
                       elevation="0"
                       class="border br-10 mb-4"
                     >
@@ -460,7 +466,7 @@
                 :loading="loadingButton"
                 @click="dialogClose"
               >
-                Save
+                Simpan
               </app-btn-component>
             </v-card-actions>
           </v-form>
@@ -597,6 +603,7 @@
         grandTotalPrice: null,
         bank: null,
         receipt: null,
+        time: null,
       },
       loadingButton: false,
       dialogPayment: false,
@@ -707,6 +714,7 @@
         this.form.message = item.message
         this.form.receipt = item.receipt_of_payment
         this.form.bank = `${item.bank_name} - ${item.account_name}`
+        this.form.time = item.created_at
 
         this.dialog = true
         this.readDetailTransaksi()
@@ -742,6 +750,25 @@
         this.alert(result.data.status, result.data.message)
         this.read()
         this.dialogClose()
+      },
+
+      showcheck (value) {
+        const a = new Date(value)
+        const yearA = a.getFullYear() * 365
+        const monthA = (a.getMonth() + 1) * 30
+        const dateA = a.getDate()
+        const timeA = yearA + (monthA + 1) + dateA + 2
+
+        const b = new Date()
+        const yearB = b.getFullYear() * 365
+        const monthB = (b.getMonth() + 1) * 30
+        const dateB = b.getDate()
+        const timeB = yearB + monthB + dateB
+
+        if (timeA > timeB) {
+          return true
+        }
+        return false
       },
     },
   }

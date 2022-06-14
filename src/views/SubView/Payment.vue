@@ -82,7 +82,7 @@
         </v-row>
 
         <p class="text-h5">
-          Jangan lupa untuk menyertakan resi pembayaran.
+          Jika tidak menyelesaikan transaksi, maka transaksi ini akan batal pada {{ timeConverter() }}. Jangan lupa untuk menyertakan resi pembayaran.
         </p>
 
         <v-file-input
@@ -105,7 +105,7 @@
           :loading="loadingButton"
           @click="setForm"
         >
-          Save
+          Simpan
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -199,6 +199,17 @@
         }
         this.$router.push('/')
         this.loadingButton = false
+      },
+
+      timeConverter () {
+        const a = new Date()
+        a.setDate(a.getDate() + 2)
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        const year = a.getFullYear()
+        const month = months[a.getMonth()]
+        const date = a.getDate()
+        const time = date + ' ' + month + ' ' + year
+        return time
       },
     },
   }

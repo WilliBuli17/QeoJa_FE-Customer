@@ -19,7 +19,7 @@
         <v-icon class="me-0 me-sm-3">
           mdi-account-circle-outline
         </v-icon>
-        <span class="d-none d-sm-block">Account</span>
+        <span class="d-none d-sm-block">Akun</span>
       </v-btn>
     </template>
 

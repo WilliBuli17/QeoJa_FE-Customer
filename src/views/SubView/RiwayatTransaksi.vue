@@ -661,7 +661,7 @@
       },
 
       dialogOpenPayment (item) {
-        this.bankId = item.bank_payment_id
+        this.bankId = Number(item.bank_payment_id)
         this.grandTotal = parseFloat(item.grand_total_price)
         this.bankId = item.id
         this.dialogPayment = true

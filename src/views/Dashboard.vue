@@ -63,7 +63,6 @@
                   </h5>
                   <v-range-slider
                     v-model="range"
-                    step="50000"
                     :max="max"
                     :min="min"
                     hide-details

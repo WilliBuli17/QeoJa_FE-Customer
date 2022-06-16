@@ -105,7 +105,7 @@
               :key="n.id"
             >
               <account
-                v-if="n.name === 'Account' && dataCustomer.name !== null"
+                v-if="n.name === 'Akun' && dataCustomer.name !== null"
                 :data-customer="dataCustomer"
                 :selected-file="selectedFile"
                 @clicked="resetForm"
@@ -185,7 +185,7 @@
       length: [
         {
           id: 0,
-          name: 'Account',
+          name: 'Akun',
         },
         {
           id: 1,

@@ -18,7 +18,7 @@
             class="no-background-hover"
             to="/"
           >
-            <v-avatar size="80">
+            <v-avatar size="60">
               <img
                 src="../assets/logo.png"
                 alt=""
@@ -41,9 +41,9 @@
             @click="setLink()"
           >
             <v-icon class="me-0 me-sm-3">
-              mdi-cart-outline
+              mdi-shopping-outline
             </v-icon>
-            <span class="d-none d-sm-block">Cart</span>
+            <span class="d-none d-sm-block">Keranjang</span>
           </app-btn-component>
         </v-container>
       </v-app-bar>

@@ -339,7 +339,7 @@
             customer.append('phone', this.form.phone)
             customer.append('password', this.form.password)
 
-            result = await this.apiService.storeData(this.$http, 'customer', customer)
+            result = await this.apiService.storeData(this.$http, 'customerStore', customer)
 
             this.alert(result.data.status, result.data.message)
             this.refreshForm()

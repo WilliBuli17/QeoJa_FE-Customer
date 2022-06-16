@@ -290,7 +290,7 @@
         if (action === 'Ubah' || action === 'Hapus') {
           this.form.id = item.id
           this.form.address = item.address
-          this.form.city = item.city_id
+          this.form.city = Number(item.city_id)
         }
         this.action = action
         this.dialog = true

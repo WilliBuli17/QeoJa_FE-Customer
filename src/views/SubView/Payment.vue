@@ -181,7 +181,6 @@
         }
 
         this.progressLoading = false
-        this.alert(result.data.status, result.data.message)
       },
 
       formatExample (value) {

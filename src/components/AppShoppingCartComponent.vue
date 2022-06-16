@@ -148,7 +148,6 @@
       },
 
       checksQuantity (amountoOfProduct, stockQuantity) {
-        console.log(`${amountoOfProduct} - ${stockQuantity}`)
         if (amountoOfProduct.toNumber > stockQuantity.toNumber) {
           return true
         } else {

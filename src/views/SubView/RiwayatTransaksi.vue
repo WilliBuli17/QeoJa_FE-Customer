@@ -237,15 +237,10 @@
                   lg="4"
                 >
                   <app-text-input-component
-                    v-if="showcheck(form.time) || form.status !== 'Transaksi Dibatalkan'"
                     v-model="form.bank"
                     label="Bank"
                     readonly
                   />
-
-                  <span v-else>
-                    Data Disembunyikan
-                  </span>
                 </v-col>
 
                 <v-col

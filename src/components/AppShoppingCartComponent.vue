@@ -148,7 +148,7 @@
       },
 
       checksQuantity (amountoOfProduct, stockQuantity) {
-        if (amountoOfProduct.toNumber > stockQuantity.toNumber) {
+        if (Number(amountoOfProduct) > Number(stockQuantity)) {
           return true
         } else {
           return false

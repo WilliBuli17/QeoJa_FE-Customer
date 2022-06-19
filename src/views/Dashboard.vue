@@ -324,7 +324,7 @@
       dataSupplier: [],
       dataKategori: [],
       page: 1,
-      perPage: 20,
+      perPage: 24,
       radioGroup: 'All',
       checkbox: [],
       range: [],

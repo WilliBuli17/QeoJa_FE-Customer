@@ -210,7 +210,7 @@
             this.shoppingCartDrawer = true
 
             for (let i = 0; i < this.dataCart.length; i++) {
-              if (this.dataCart[i].stock_quantity < this.dataCart[i].amount_of_product) {
+              if (Number(this.dataCart[i].stock_quantity) < Number(this.dataCart[i].amount_of_product)) {
                 this.disabled = true
                 break
               } else {

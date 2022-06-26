@@ -371,7 +371,7 @@
                       <div class="px-4">
                         <v-row class="align-center">
                           <v-col
-                            class="d-flex justify-center"
+                            class="d-flex justify-lg-start justify-center"
                             cols="12"
                             md="3"
                           >
@@ -657,8 +657,8 @@
 
       dialogOpenPayment (item) {
         this.bankId = Number(item.bank_payment_id)
+        this.transactionId = Number(item.id)
         this.grandTotal = parseFloat(item.grand_total_price)
-        this.bankId = item.id
         this.dialogPayment = true
       },
 

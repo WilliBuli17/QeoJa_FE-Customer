@@ -10,8 +10,8 @@ import axios from 'axios'
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
-Vue.prototype.$file = 'https://qeoja-api.my.id/'
-// Vue.prototype.$file = 'http://127.0.0.1:8000/'
+// Vue.prototype.$file = 'https://qeoja-api.my.id/'
+Vue.prototype.$file = 'http://127.0.0.1:8000/'
 
 sync(store, router)
 

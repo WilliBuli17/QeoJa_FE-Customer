@@ -19,8 +19,7 @@
           </v-avatar>
 
           <h5 class="mb-6 font-weight-regular">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor libero id et, in gravida.
-            Sit diam duis mauris nulla cursus. Erat et lectus vel ut sollicitudin elit at amet.
+            QeoJa adalah Layanan Distibutor Barang Kelontong Terpercaya di NTT
           </h5>
         </v-col>
 
